@@ -1,5 +1,5 @@
  const vendor = require('./vendorModel')
- const User = require('../user/userController')
+ const User = require('../user/userModel')
  const bcrypt = require('bcrypt')
 
 const register = async(req,res)=>{
@@ -17,7 +17,7 @@ const register = async(req,res)=>{
         validation += 'contact is required'
     }
     if(!!validation){
-        res.send({success:false, status:400 , message:validaton})
+        res.send({success:false, status:400 , message:validation})
     }
     else{
         let prev = await User.findOne({email:req.body.email})
@@ -41,28 +41,41 @@ const register = async(req,res)=>{
                 Vendor.email = req.body.email
                 Vendor.contact = req.body.contact
                 Vendor.address = req.body.address
+                Vendor.image = "vendor/" +req.file.filename
                 Vendor._id = savedUser.userId
+                Vendor.save()
+                .then(savedVendor=>{
+                    res.send({
+                        success:true,status:200,message:"New Account Created",data:savedVendor
+                    })
+                })
+                .catch(err=>{
+                    res.send({
+                        success:true,status:500,message:err.message
+                    })
+                })
+            })
+            .catch(err=>{
+                res.send({
+                    success:false,status:500,message:err.message
+                })
             })
         }
     }
-    
 }
 
 
 const all = (req,res)=>{
-vendor.find(req.body).exec()
+    vendor
+    .find(req.body)
+    .exec()
     .then(data=>{
-        res.send({ success:true, 
-            status:200, 
-            message: "All Documents Loaded",
-            total:data.length, 
-            data:data
+        res.send({ 
+            success:true,status:200,message: "All Documents Loaded",total:data.length,data:data
         })
 })
     .catch(err=>{
-        res.send({success:false,
-            status:500,
-            message:err.message
+        res.send({success:false,status:500,message:err.message
         })
 })
 }
@@ -86,61 +99,6 @@ const single = (req,res)=>{
         })
 }
 
-const deletion = (req,res)=>{
-    let validation =''
-    if(!req.body.autoId)
-        validation = ''
-
-    if(!!validation)
-        res.send({success: false, status:500, message:validation})
-    else
-        vendor.findOne({autoId:req.body.autoId}).exec()
-            .then(data=>{
-                if(data==null)
-                    res.send({success:false,status:500,message:"VendorName does'nt Exist"})
-                else
-                    data.status = false
-                    data.save()
-                    .then(()=>{
-                        res.send({success:true,status:200,message:"Document Deleted"})
-                    })
-            .catch(err=>{
-                    res.send({success:false,status:500,message:err.message})
-            })
-        })
-        .catch(err=>{
-            res.send({success:false, status:500, message:err.message})
-        })
-            }
-const update = (req,res)=>{
-    let validation =''
-    if(!req.body.autoId)
-        validation = ''
-
-    if(!!validation)
-        res.send({success: false, status:500, message:validation})
-    else
-    vendor.findOne({autoId:req.body.autoId}).exec()
-    .then(data=>{
-        if(data==null)
-            res.send({success:false,status:500,message:"VendorName does'nt Exist"})
-        else
-        if(!!req.body.name) data.categoryName = req.body.name
-        if(!!req.body.description) data.description = req.body.description/
-
-        data.save()
-        .then()
-        res.send({success:true,status:200,message:"Document Deleted"})
-    })
-      .catch(err=>{
-                res.send({success:false,status:500,message:err.message})
-            })
-                    
-  .catch(err=>{
-res.send({success:false, status:500, message:err.message})
-})
-}
-
-module.exports = {addVendor,all,single,deletion,update}
+module.exports = {register,all,single}
 
 

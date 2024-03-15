@@ -1,66 +1,49 @@
 const customer = require('./customerModel')
-const user = require('../user/userModel')
+const User = require('../user/userModel')
 const bcrypt = require('bcrypt')
 
-const register = async(req,res)=>{
+const register = async (req,res)=>{
     let validation = ''
     if(!req.body.name){
         validation += 'name is required'
     }
     if(!req.body.email){
-        validation += 'email is required'
-    } if(!req.body.password){
+        validation +='email is required'
+    }
+    if(!req.body.password){
         validation += 'password is required'
-    } if(!req.body.contact){
-        validation += 'contact is required'
-    } if(!req.body.address){
-        validation += 'address is required'
     }
     if(!!validation){
         res.send({success:false,status:400,message:validation})
     }
     else{
-        let prev = await user.findOne({email:req.body.email})
+        let prev = await User.findOne({email:req.body.email})
         if(!!prev){
-            res.send({success:false,status:400,message:"Email ALready Exist"})
+            res.send({success:false,status:400,message:"Email Already Exist"})
         }
         else{
-            let total = await user.countDocuments()
-            let User = new user()
-            User.autoId = total + 1
-            User.name = req.body.name
-            User.email = req.body.email
-            User.password = bcrypt.hashSync(req.body.password,10)
-            User.save()
-            .then(async savedUser=>{
+            let total = await User.countDocuments()
+            let user = new User()
+            user.autoId = total+1
+            user.name = req.body.name
+            user.email = req.body.email
+            user.password = bcrypt.hashSync(req.body.password,10)
+            user.usertype = 2
+            user.save()
+            .then(async saverUser=>{
                 let customerTotal = await customer.countDocuments()
-                let customer = new customer()
-                customer.autoId = customerTotal + 1
-                customer.name = req.body.name
-                customer.email = req.body.email
-                customer.contact = req.body.contact
-                customer.address = req.body.address
-                customer.userId = savedUser._id
-                customer.save()
-                .then(savedCustomer=>{
-                    res.send({
-                        success:true,status:200,message:"New Account Created",data:savedCustomer
-                    })
-                })
-                .catch(err=>{
-                    res.send({
-                        success:false,status:500,message:err.message
-                    })
-                })
-            })
-            .catch(err=>{
-                res.send({
-                    success:false,status:500,message:err.message
-                })
+                let Customer = new customer()
+                Customer.autoId = customerTotal+1
+                Customer.name = req.body.name
+                Customer.email = req.body.email
+                
             })
         }
     }
 }
+
+
+    
 
 
 

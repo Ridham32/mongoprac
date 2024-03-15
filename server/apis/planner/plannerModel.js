@@ -5,6 +5,8 @@ const plannerSchema = new mongoose.Schema({
     email:{type:String,default:''},
     createdAt:{type:Date,default:Date.now()},
     status:{type:Boolean,default:true},
+    contact:{type:Number,default:0},
+    address:{type:String,default:""},
     vendorId:{type:mongoose.Schema.Types.ObjectId,default:null,ref:'vendor'},
     userId:{type:mongoose.Schema.Types.ObjectId,default:null,ref:'user'},
     image:{type:String,default:"planner/noimage.jpg"}

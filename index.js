@@ -12,10 +12,12 @@ app.use(express.static("./server/public"))
 const adminRoutes =  require('./server/routes/adminRoutes')
 const customerRoutes = require('./server/routes/customerRoutes')
 const plannerRoutes = require('./server/routes/plannerRoutes')
+const vendorRoutes = require('./server/routes/vendorRoutes')
 app.use(cors())    // handle request from frontend
 app.use("/customer",customerRoutes)
 app.use("/planner",plannerRoutes)
 app.use("/admin",adminRoutes)
+app.use("/vendor",vendorRoutes)
 
 
 
