@@ -48,7 +48,6 @@ app.post('/uploadFile',upload.single('image'),(req,res)=>{
 const adminRoutes =  require('./server/routes/adminRoutes')
 const customerRoutes = require('./server/routes/customerRoutes')
 const plannerRoutes = require('./server/routes/plannerRoutes')
-const { MongooseError } = require('mongoose')
 app.use(cors())    // handle request from frontend
 app.use("/customer",customerRoutes)
 app.use("/planner",plannerRoutes)

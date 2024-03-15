@@ -1,4 +1,6 @@
 const vendorCategory = require('./vendorCategoryModel')
+const multer = require('multer')
+
 
 const addCategory = async (req, res) => {
     let validation = ""
@@ -129,6 +131,21 @@ const update = (req, res) => {
                 res.send({ success: false, status: 500, message: err.message })
             })
 }
+
+const fileStorage = multer.diskStorage({
+    //keys , ....cb=>call back
+    destination:(req,file,cb)=>{
+        cb(null,'./public/')
+    },
+    filename:(req,file,cb)=>{
+        console.log("filename in diskStorage",file);
+        cb(null,Date.now()+'-'+file.fieldname+'-'+file.originalname)
+    }
+})
+//file name :- 1709621657390-image-cateringLogo
+const upload = multer({storage:fileStorage})
+
+
 
 module.exports = { addCategory, all, single, deletion, update }
 
