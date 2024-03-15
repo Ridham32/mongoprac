@@ -1,11 +1,9 @@
 const express = require('express')
 const app =express()
 const PORT = 5000
-const mongoose = require('mongoose')
 const cors = require('cors')
 const db = require('./server/config/db')
 const seed = require('./server/config/seeder')
-const multer = require('multer')
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(express.static("./server/public"))

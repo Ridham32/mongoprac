@@ -106,7 +106,76 @@ const changePassword =(req,res)=>{
 }
 }
 
-module.exports = {login,changePassword}
+
+const update = (req,res)=>{
+    let validation = ''
+    if(!req.body.userId){
+        validation += 'id is required.'
+    }
+
+    if(!!validation){
+        res.send({
+            success:false,status:400,message:validation
+        })
+    }
+    else{
+        user.findOne({
+            userId:req.body.userId
+        })
+        .exec()
+        .then(data=>{
+            if(data == null){
+                res.send({success:false, status:400, message:"User doesn't exist"})
+            }
+            else{
+                if(!!req.body.name) data.name = req.body.name
+                if(!!req.body.email) data.email = req.body.email
+                data.save()
+                
+                        .then(savedUser=>{
+                            res.send({success:true,status:200,message:"Planner Profile Updated",data:savedUser})
+                        })
+                        .catch(err=>{
+                            res.send({success:false,status:400,message:err.message
+                                
+                            })
+                        })
+                    }
+                })
+                .catch(err=>{
+                    res.send({
+                        success:false,status:500,message:err.message
+            })
+        })
+    }
+}
+
+const deletion = (req,res) =>{
+    let validation = ''
+    if(!req.body._id)
+    validation = ''
+if(!!validation)
+    res.send({success:false,status:500,message: validation})
+else
+    user.findOne({_id: req.body._id }).exec()
+        .then(data =>{
+            if(data == null)
+                res.send({success:false,status:500,message:"Item doesn't exist"})
+            else
+                data.status = false
+            data.save()
+            .then(()=>{
+                res.send({success:true,status:200,message:"Item Deleted"})
+            })
+            .catch(err =>{
+                res.send({success:false,status:500,message:err.message})
+            })
+        })
+        
+}
+
+
+module.exports = {login,changePassword,update,deletion}
 
 
 
