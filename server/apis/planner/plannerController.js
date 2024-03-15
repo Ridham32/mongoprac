@@ -45,6 +45,7 @@ const register =async (req, res)=>{
             planner.email = req.body.email
             planner.contact = req.body.contact
             planner.address = req.body.address
+            planner.image = "planner/" + req.file.filename
             planner._id = savedUser.userId
             planner.save()
             .then(savedPlanner=>{
