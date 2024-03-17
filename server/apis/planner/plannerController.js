@@ -72,7 +72,8 @@ const register =async (req, res)=>{
 // admin panel: list of all customer
 const all = (req, res) => {
     Planner
-      .find(req.body)
+      .find()
+
       .exec()
       .then((data) => {
         res.send({
@@ -87,7 +88,7 @@ const all = (req, res) => {
         res.send({
           success: false,
           status: 500,
-          message: err.message,
+          message: err.message
         });
       });
   }

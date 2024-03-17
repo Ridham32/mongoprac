@@ -36,18 +36,80 @@ const register = async (req,res)=>{
                 Customer.autoId = customerTotal+1
                 Customer.name = req.body.name
                 Customer.email = req.body.email
-                
+                Customer._id = saverUser.userId
+                Customer.save()
+                .then(savedVendor=>{
+                    res.send({
+                        success:true,status:200,message:"New Account Created",data:savedVendor
+                    })
+                })
+                .catch(err=>{
+                    res.send({
+                        success:false,status:500,message:err.message
+                    })
+                })
+            })
+            .catch(err=>{
+                res.send({
+                    success:false,status:500,message:err.message
+                })
             })
         }
     }
 }
 
+const all = (req,res)=>{
+    vendor 
+    .find(req.body)
+    .exec()
+    .then((data)=>{
+        res.send({
+            success:true,status:200,message:"All Documens Loaded",
+            total:data.length,
+            data:data,
+        })
+    })
+    .catch((err)=>{
+        res.send({
+            success:false,status:500,message:err.message
+        })
+    })
+}
 
+const single = (req,res)=>{
+    let validation = ''
+    if(!req.body.autoId)
+    validation = ''
+if(!!validation)
+res.send({
+    success:false,status:500,message: validation
+})
+
+else
+vendor.findOne({autoId:req.body.autoId}).exec()
+.then(data=>{
+    if(data == null)
+    res.send({
+success:false,status:500,message:"Vendor Not Found"})
+else
+res.send({
+    success:true,status:200,message:"Single Loaded Document",data:data
+})
+})
+
+.catch(err=>{
+    res.send({
+        success:false,status:500,message:err.message
+    })
+})
+
+
+}
     
 
 
 
 
-module.exports = {register}
+module.exports = {register,all,single}
 
 

@@ -1,5 +1,6 @@
  const vendor = require('./vendorModel')
  const User = require('../user/userModel')
+ const vendorCategory =require('../vendorCategory/vendorCategoryModel')
  const bcrypt = require('bcrypt')
 
 const register = async(req,res)=>{
@@ -16,6 +17,9 @@ const register = async(req,res)=>{
     if(!req.body.contact){
         validation += 'contact is required'
     }
+    if(!req.body.categoryId){
+        validation += 'categoryId is required'
+}
     if(!!validation){
         res.send({success:false, status:400 , message:validation})
     }
@@ -39,6 +43,7 @@ const register = async(req,res)=>{
                 Vendor.autoId = vendorTotal +1
                 Vendor.name = req.body.name
                 Vendor.email = req.body.email
+                Vendor.categoryId = req.body.categoryId
                 Vendor.contact = req.body.contact
                 Vendor.address = req.body.address
                 Vendor.image = "vendor/" +req.file.filename
@@ -67,7 +72,8 @@ const register = async(req,res)=>{
 
 const all = (req,res)=>{
     vendor
-    .find(req.body)
+    .find()
+    .populate('categoryId')
     .exec()
     .then(data=>{
         res.send({ 
