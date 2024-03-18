@@ -46,7 +46,7 @@ const register =async (req, res)=>{
             planner.contact = req.body.contact
             planner.address = req.body.address
             planner.image = "planner/" + req.file.filename
-            planner._id = savedUser.userId
+            planner.userId = savedUser._id
             planner.save()
             .then(savedPlanner=>{
                 res.send({
@@ -73,7 +73,7 @@ const register =async (req, res)=>{
 const all = (req, res) => {
     Planner
       .find()
-
+      .populate('userId')
       .exec()
       .then((data) => {
         res.send({

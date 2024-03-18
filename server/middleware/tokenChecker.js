@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const SECRET = "housekeeping"
+const SECRET = "AyojanBkend"
 
 const check = (req,res,next)=>{
     let token = req.headers['authorization']

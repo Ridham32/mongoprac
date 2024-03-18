@@ -1,5 +1,7 @@
 const user = require('./userModel')
 const bcrypt = require('bcrypt')
+const jsonwebtoken = require('jsonwebtoken')
+const SECRET = "AyojanBkend"
 
 const login = (req,res)=>{
     let validation = ''
@@ -22,7 +24,17 @@ const login = (req,res)=>{
             else{
                 if(bcrypt.compareSync(req.body.password,data.password)){
                     if(data.status){
-                        res.send({success:true,status:200,message:"Login Successful",data:data})
+                        let payload = {
+                            _id  :data._id,
+                            contact: data.contact,
+                            address: data.address,
+                            name: data.name,
+                            email: data.email,
+                            usertype: data.usertype
+                         }
+                         let token = jsonwebtoken.sign(payload,SECRET)
+
+                        res.send({success:true,status:200,message:"Login Successful",data:data,token:token})
                     }
                     else{
                         res.send({success:false,status:400,message:"Account Inactive"})

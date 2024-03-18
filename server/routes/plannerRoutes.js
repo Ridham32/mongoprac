@@ -17,7 +17,7 @@ const fileStorage = multer.diskStorage({
 })
 const upload = multer({storage:fileStorage})
 router.post('/register',upload.single("image"),plannerController.register)
-
+router.post('/login',userController.login)
 router.use(require("../middleware/tokenChecker"))
 
 router.post('/deletion',userController.deletion)
