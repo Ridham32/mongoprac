@@ -76,13 +76,7 @@ const all = (req, res) => {
       .populate('userId')
       .exec()
       .then((data) => {
-        res.send({
-          success: true,
-          status: 200,
-          message: "All Documents Loaded",
-          total: data.length,
-          data: data,
-        });
+        res.send({success: true,status: 200,message: "All Documents Loaded",total: data.length,data: data});
       })
       .catch((err) => {
         res.send({

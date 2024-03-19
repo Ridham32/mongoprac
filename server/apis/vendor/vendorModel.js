@@ -9,6 +9,6 @@ const vendorSchema = new mongoose.Schema({
     status:{type:Boolean,default:true},
     createdAt:{type:Date,default:Date.now()},
     image:{type:String,default:"vendor/noimage.jpg"},
-    userId:{type:mongoose.Schema.Types.ObjectId,default:null,ref:'vendor'}
+    userId:{type:mongoose.Schema.Types.ObjectId,default:null,ref:'user'}
 })
 module.exports = mongoose.model( 'vendor', vendorSchema)

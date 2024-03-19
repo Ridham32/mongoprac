@@ -47,7 +47,7 @@ const register = async(req,res)=>{
                 Vendor.contact = req.body.contact
                 Vendor.address = req.body.address
                 Vendor.image = "vendor/" +req.file.filename
-                Vendor._id = savedUser.userId
+                Vendor.userId = savedUser._id
                 Vendor.save()
                 .then(savedVendor=>{
                     res.send({
@@ -73,7 +73,7 @@ const register = async(req,res)=>{
 const all = (req,res)=>{
     vendor
     .find()
-    .populate('categoryId')
+    .populate('userId')
     .exec()
     .then(data=>{
         res.send({ 
