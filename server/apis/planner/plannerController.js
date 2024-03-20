@@ -70,7 +70,7 @@ const register =async (req, res)=>{
 }
 
 
-// admin panel: list of all customer
+
 const all = (req, res) => {
     Planner
       .find()
