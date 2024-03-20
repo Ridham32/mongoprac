@@ -11,11 +11,12 @@ const register = async(req,res)=>{
     if(!req.body.email){
         validation += "email is required"
     }
-    if(!req.body.password){
-        validation += 'password is required'
-    }
+    
     if(!req.body.contact){
         validation += 'contact is required'
+    }
+    if(!req.body.password){
+        validation += 'password is required'
     }
     if(!req.body.categoryId){
         validation += 'categoryId is required'
