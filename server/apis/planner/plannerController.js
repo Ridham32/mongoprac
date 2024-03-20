@@ -28,6 +28,7 @@ const register =async (req, res)=>{
         if(!!prev){
             res.send({success:false, status:400, message:"Email Already Exists"})
         }
+       
     else{
         let total = await User.countDocuments()
         let user = new User()
